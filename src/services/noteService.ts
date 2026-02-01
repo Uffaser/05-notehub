@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Note} from "../types/note";
+import type { Note } from "../types/note";
 
 const myKey = import.meta.env.VITE_NOTEHUB_TOKEN;
 
@@ -8,46 +8,40 @@ interface GetNotesResponse {
     totalPages: number;
 }
 
-interface PostNotesResponse {
+interface PostNote {
     title: string;
     content: string;
     tag: string;
 }
 
+const noteInstance = axios.create({
+    baseURL: 'https://notehub-public.goit.study/api',
+    headers: {
+        Authorization: `Bearer ${myKey}`
+    }
+})
 axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 
 export async function fetchNotes(page:number, search:string):Promise<GetNotesResponse> {
-    const {data} = await axios.get<GetNotesResponse>('/notes', {
+    const {data} = await noteInstance.get<GetNotesResponse>('/notes', {
         params: {
             page: page,
             perPage: 15,
             search: search,
         },
-        headers: {
-            Authorization: `Bearer ${myKey}`
-        }
-    }
-        
-    )
+    })
     return data
 }
 
-export async function createNote(newNote:PostNotesResponse):Promise<PostNotesResponse> {
-    const { data } = await axios.post<PostNotesResponse>('/notes', newNote, {
-        headers: {
-            Authorization: `Bearer ${myKey}`
-        }
-    })
+export async function createNote(newNote:PostNote):Promise<Note> {
+    const { data } = await noteInstance.post<Note>('/notes', newNote)
 
     return data;
 }
 
 
-export async function deleteNote(id: string) {
-    const { data } = await axios.delete<PostNotesResponse>(`/notes/${id}`, {
-        headers: {
-            Authorization: `Bearer ${myKey}`
-        }
-    })
+export async function deleteNote(id: string):Promise<Note> {
+    const { data } = await noteInstance.delete<Note>(`/notes/${id}`)
+
     return data;
 }

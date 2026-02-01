@@ -20,7 +20,6 @@ const noteInstance = axios.create({
         Authorization: `Bearer ${myKey}`
     }
 })
-axios.defaults.baseURL = 'https://notehub-public.goit.study/api';
 
 export async function fetchNotes(page:number, search:string):Promise<GetNotesResponse> {
     const {data} = await noteInstance.get<GetNotesResponse>('/notes', {

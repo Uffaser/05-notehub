@@ -48,7 +48,10 @@ export default function NoteForm({ onClose }: NoteFormProps) {
             .max(50, 'Title is too long')
             .required('Title is required'),
         content: Yup.string().max(500, 'Content is too long'),
-        tag: Yup.string().required('Tag required'),
+        tag: Yup.string().oneOf(
+            ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'],
+            'Invalid tag'
+        ),
     });
 
     return (

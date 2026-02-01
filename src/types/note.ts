@@ -1,8 +1,13 @@
+type NoteTag = 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping'
+
+
 export interface Note {
     content: string;
-    id?: string;
+    id: string;
     title: string;
-    tag: string;
+    tag: NoteTag;
+    createdAt: string;
+    updatedAt: string;
 }
 
-export type NoteId = Note['id']
+
